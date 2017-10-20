@@ -10,8 +10,13 @@ RUN apt update && \
         libgtk2.0-bin \
         librsvg2-2 \
         libmono-system-windows-forms4.0-cil \
-        mono-runtime
+        mono-runtime && \
+    apt-get clean
 
-RUN curl -s https://percepio.com/downloads/TzForFreeRTOS-3.1.3.tgz | tar -C /opt -xzf -
+ENTRYPOINT ["sh", "/opt/tz-helper.sh"]
 
-ENTRYPOINT ["mono", "/opt/TzForFreeRTOS-3.1.3/TzForFreeRTOS.exe"]
+ADD https://raw.githubusercontent.com/philmd/docker-tracealyzer/master/common/tz-helper.sh /opt/tz-helper.sh
+
+ENV TRACEALIZER_VERSION 3.1.3
+
+RUN curl -s https://percepio.com/downloads/TzForFreeRTOS-${TRACEALIZER_VERSION}.tgz | tar -C /opt -xzf -
